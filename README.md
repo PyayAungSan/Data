@@ -5,9 +5,15 @@ These fundamental ML algorithms are written according to the equations instructe
                                                
 #### Linear Regression
 
-Although the data set used has few features, this well implemented linear regression will significantly minimize the cost function. 
+Although the data set used has few features, this well implemented linear regression will significantly minimize the cost function (error). 
+
+######Cost Function
 
 ![alt text](https://github.com/PyayAungSan/Machine-Learning/blob/master/img/Cost%20Function.png)
+
+where the hypothesis is given by this linear model
+
+![alt text](https://github.com/PyayAungSan/Machine-Learning/blob/master/img/hypothesis.png) 
 
 
                                                
