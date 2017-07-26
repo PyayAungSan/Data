@@ -1,6 +1,8 @@
-                                               Machine Learning Algorithms
+                                               # Machine Learning Algorithms
                                                
                                                
 ## Linear Regression
+
+
 
                                                
