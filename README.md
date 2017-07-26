@@ -9,7 +9,7 @@ Although the data set used has few features, this well implemented linear regres
 
 ###### Cost Function
 
-![alt text](https://github.com/PyayAungSan/Machine-Learning/blob/master/img/Cost%20Function.png)
+![alt text](https://github.com/PyayAungSan/Machine-Learning/blob/master/img/Cost_Function.png)
 
 where the hypothesis is given by this linear model
 
