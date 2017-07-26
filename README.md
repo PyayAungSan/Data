@@ -7,7 +7,7 @@ These fundamental ML algorithms are written according to the equations instructe
 
 Although the data set used has few features, this well implemented linear regression will significantly minimize the cost function. 
 
-![alt text](https://github.com/PyayAungSan/Machine-Learning/img/Cost-Function.png)
+![alt text](https://github.com/PyayAungSan/Machine-Learning/img/Cost Function.png)
 
 
                                                
