@@ -1,6 +1,6 @@
-                                                 Machine Learning Algorithms
+                                              Machine Learning Algorithms
              
-These fundamental ML algorithms are written according to the equations instructed by free yet amazing Andrew Ng's Stanford Machine learning course. The course is mainly instructed in MATLAB. But I wrote in Python to practice myself. I additionally use Python's in-house ready-made scikit-learn and Google's tensor flow libraries to understand better.
+These fundamental ML algorithms are written according to the equations instructed by free yet amazing Andrew Ng's Stanford Machine learning course. The course is mainly instructed in MATLAB. But I wrote in Python to get hands-on experience on python vectorizing. I additionally use Python's in-house ready-made scikit-learn and Google's tensor flow libraries to understand better.
                                                
                                                
 ### Linear Regression
@@ -9,7 +9,7 @@ Although the data set used has few features, this well implemented linear regres
 
 ###### Cost Function
 
-![alt text](https://github.com/PyayAungSan/Machine-Learning/blob/master/img/Cost%20Function.png)
+![alt text](https://github.com/PyayAungSan/Machine-Learning/blob/master/img/Cost_Function.png)
 
 where the hypothesis is given by this linear model
 
