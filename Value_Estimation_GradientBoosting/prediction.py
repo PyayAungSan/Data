@@ -3,7 +3,8 @@
 
 
 """
-- This is to check how well our model can predict the price of an artifical house price.
+- This is to check how the prices change based on the attributes
+
 
 - codes are from Lynda by Adam Geitgey
 
