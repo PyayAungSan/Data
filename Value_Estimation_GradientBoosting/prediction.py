@@ -6,7 +6,6 @@
 - This is to check how the prices change based on the attributes
 
 
-- codes are from Lynda by Adam Geitgey
 
 
 """

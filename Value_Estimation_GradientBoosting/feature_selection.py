@@ -6,7 +6,6 @@
 looking at the train model to understand how often each feature
 is used in determining the final price. 
 
-- codes are from Lynda by Adam Geitgey
 
 
 """

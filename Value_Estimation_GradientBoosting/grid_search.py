@@ -7,7 +7,6 @@ housing price (which is done in Ipython notebook in the same folder)
 
 - Here we will explore Grid Search to tune parameters of the model.
 
-- codes are from Lynda by Adam Geitgey
 
 
 """
