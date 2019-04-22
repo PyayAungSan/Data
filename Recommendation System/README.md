@@ -74,11 +74,19 @@ So, we can recommend the romance movies to the users who scored high in romance.
 Let's say we want to recommend a movie to John, what movie should we recommend Sabrina or Notorious ? We can see that John Reviews are very similar to Bob Review.They both gave Roman Holiday five stars and the Third Man one start. The same situation goes to Susan and Alice. 
 
 
+#### Advantages : 
+
+- [x] Doesn't require any knowledge about the products themselves 
+
+#### Disadvantages : 
+
+- [x] Only works if there already is user reviews 
+- [x] Hence , it is difficult to make good recommendations for brand-new users
+- [x] Tend to favor popular products with lots of reviews. That will make it hard to recommend for new releases since they are not often recommended.
+
 
  
 
- **Answer**:
-- [x] There are 151 households with about 2.5 residents and 3.6 bedrooms on average. Since the maximum of Age is 6, I would assume Age does not indicate the absolute age , but rather the level (such as 6 being the oldest) (Ref: 1.1)
 
 
 
