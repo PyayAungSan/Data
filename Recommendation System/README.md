@@ -10,7 +10,7 @@ Our system will be able to recommend new movies to users based on the reviews of
 
 Generally, there are two types of recommendations: Content-based recommendations and Collaborative filtering.
 
-1. Content-based recommendations:Recommending based on product attributes
+1. **Content-based recommendations:Recommending based on product attributes**
 
    Content-based recommendation system uses knowledge about each product to recommend new products. For instance, if you watch a romantic comedy movie and rates 5 starts since you really like it. Then, you will be recommended another high rated romantic comedy movie with common attributes. 
 
@@ -42,7 +42,7 @@ In content-based recommendation system, we will also have  details about each mo
 
 
 
-So, we can recommend the romance movies to the users who scored high in romance. Here in this example, Sabrina has a high rank on Romance just as Roman Holiday whereas The Third Man and Notorious are Suspense type of movie. Hence, John have a high chance of getting recommendation to Sabrina movie. 
+So, we can recommend the romance movies to the users who scored high in romance. Here in this example, Sabrina has a high rank on Romance just as Roman Holiday whereas The Third Man and Notorious are Suspense type of movie. Hence, John have a high chance of getting recommended to Sabrina movie. 
 
 
 
@@ -56,11 +56,23 @@ So, we can recommend the romance movies to the users who scored high in romance.
 - [x] Difficult to implement for many kinds of large product databases 
 
 
+2. **Collaborative Filtering: Recommending based on similar users**
+
+   In Collaborative Filtering, no knowledge about the product is needed. It is making recommendations only based on how users rated products in the past. 
 
 
-```
-(Ref: ) means to refer from iPython notebook. 
-```
+#### User Ratings
+
+
+| User   | Roman Holiday | Sabrina | The Third Man | Notorious       |
+|--------|---------------|---------|---------------|-----------------|
+| Susan  | 1 star        | 1 star  | 5 stars       | 5 stars         |
+| John   | 5 stars       |[5 stars]| 1 star        | [1.5 star]      |
+| Bob    | 5 stars       | 5 stars | 1 star        | 2 stars         |
+| Alice  | 1 star        | 1 star  | 5 stars       | 5 stars         |
+
+Let's say we want to recommend a movie to John, what movie should we recommend Sabrina or Notorious ? We can see that John Reviews are very similar to Bob Review.They both gave Roman Holiday five stars and the Third Man one start. The same situation goes to Susan and Alice. 
+
 
 
  
