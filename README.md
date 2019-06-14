@@ -15,7 +15,7 @@
  
 
 
- **linear correlation between the number of residents and the electricty usage**
+ **Linear correlation between the number of residents and the electricty usage**
  
  - [x] To find liner correlation between number of residents and the electricity usage, I calcuate the average on the total usage of electricity for each household througout the panel. The result is about 30% correlation between them. (Ref : 1.4)
  
@@ -26,7 +26,7 @@
   - [x] I chose to remove data points which are beyond 2 standard deviation. The correlation between number of bedroom has improved  to about 68% from 54%. (Ref: 1.9)
 
  
- **a plot of the residents VS electrity**:
+ **A plot of the residents VS electrity**:
  
 -[x] As explained above, please see figure 1,2,3. 
 
@@ -37,7 +37,7 @@
  
 
 
-  **the energy usage over time for both 803 and 3613**:
+  **The energy usage over time for both 803 and 3613**:
  
 - [x] There is a sudden drop in energy consumption for both households after about 45th or 48th day. The reason could be the weather change(such as approaching winter or summer), national disaster, or change in energy policy such as higher utility bill.
 
@@ -52,7 +52,7 @@
 
  
  
- **pairwise correlation of columns coefficients for all the covariates versus the average energy usage**:
+ **Pairwise correlation of columns coefficients for all the covariates versus the average energy usage**:
  
 - [x]  After doing pairwise correlation as explained above in 1.4, bedroom and average electricity consumption has more weight than resident.
  
