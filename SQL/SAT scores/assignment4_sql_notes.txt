@@ -1,0 +1,247 @@
+
+
+/*Initiating SQL table and importing from CSV */
+sqlite> .tables
+sqlite> .read SAT.sql
+
+sqlite> .tables
+SAT
+sqlite> .separator ","
+sqlite> .import output.csv SAT
+sqlite> .schema SAT
+CREATE TABLE SAT (
+  DBN varchar(32) NOT NULL,
+  school_name varchar(150),
+  taker int(4) default 0,
+  reading int(4),
+  math int(4),
+  writing int(4),
+  PRIMARY KEY(DBN)
+  );
+
+
+
+
+#1.number of records 
+
+sqlite> SELECT COUNT(*)
+   ...> FROM SAT
+   ...> ;
+421
+
+/* 2 Since there is no identical group (such as publisher in Professor’s example), 
+each school will behave as a group and number of takers, highest and lowest score are retrieved. */
+
+#highest number of SAT takers
+
+sqlite> SELECT DBN,school_name,taker,reading,math,writing
+   ...> FROM SAT
+   ...> ORDER BY taker DESC
+   ...> LIMIT 1;
+13K430      BROOKLYN TECHNICAL HIGH SCHOOL  1277        587         659         587
+
+#highest math average score
+
+sqlite> SELECT DBN,school_name,math
+   ...> FROM SAT
+   ...> ORDER BY math DESC
+   ...> LIMIT 1;
+02M475      STUYVESANT HIGH SCHOOL  735
+
+#lowest average reading score
+
+sqlite> SELECT DBN,school_name,reading
+   ...> FROM SAT
+   ...> ORDER BY reading
+   ...> LIMIT 1;
+19K583      MULTICULTURAL HIGH SCHOOL  279
+
+#highest average writing score
+
+sqlite> SELECT DBN,school_name,writing
+   ...> FROM SAT
+   ...> ORDER BY writing DESC
+   ...> LIMIT 1;
+02M475      STUYVESANT HIGH SCHOOL  682
+
+
+
+#3. alphabetical order of school names with number of exam takers and maths score
+
+sqlite> SELECT school_name,taker,math
+   ...> FROM SAT
+   ...> ORDER BY school_name
+   ...> LIMIT 10;
+47 THE AMERICAN SIGN LANGUAGE AND ENGLISH SECONDARY SCHOOL  16          400
+A. PHILIP RANDOLPH CAMPUS HIGH SCHOOL                       228         456
+ABRAHAM LINCOLN HIGH SCHOOL                                 475         437
+ACADEMY FOR CAREERS IN TELEVISION AND FILM                  98          440
+ACADEMY FOR COLLEGE PREPARATION AND CAREER EXPLORATION: A   59          374
+ACADEMY FOR CONSERVATION AND THE ENVIRONMENT                35          381
+ACADEMY FOR ENVIRONMENTAL LEADERSHIP                        50          366
+ACADEMY FOR LANGUAGE AND TECHNOLOGY                         54          339
+ACADEMY FOR SCHOLARSHIP AND ENTREPRENEURSHIP: A COLLEGE BO  56          394
+ACADEMY FOR SOCIAL ACTION: A COLLEGE BOARD SCHOOL           33          366
+
+/*4. Again, since the data has only one column with school name to find 
+ the identical group, sum of maths, reading and writing is grouped.
+ Also, it does not make sense of find Average since the individual columns(maths, reading and writing scores) are already averaged. So , I sum up the scores instead to make it complex. */
+
+
+sqlite> SELECT school_name,reading,math,writing,(reading+math+writing) as 'total'
+   ...> FROM SAT
+   ...> GROUP BY total
+   ...> ORDER BY total DESC;
+   ...> LIMIT 10;
+   
+STUYVESANT HIGH SCHOOL  679         735         682         2096
+BRONX HIGH SCHOOL OF S  632         688         649         1969
+STATEN ISLAND TECHNICA  635         682         636         1953
+HIGH SCHOOL OF AMERICA  636         648         636         1920
+TOWNSEND HARRIS HIGH S  621         651         638         1910
+QUEENS HIGH SCHOOL FOR  612         660         596         1868
+BARD HIGH SCHOOL EARLY  624         604         628         1856
+HIGH SCHOOL FOR MATHEM  605         654         588         1847
+BROOKLYN TECHNICAL HIG  587         659         587         1833
+ELEANOR ROOSEVELT HIGH  572         594         592         1758
+
+#5 user friendly list of the first 15 rows 
+
+sqlite> SELECT (school_name || "("||taker||", "||reading||", "||math||", "||writing||")") AS grop
+   ...> FROM SAT
+   ...> ORDER BY school_name
+   ...> LIMIT 15;
+47 THE AMERICAN SIGN LANGUAGE AND ENGLISH SECONDARY SCHOOL(16, 395, 400, 387)
+A. PHILIP RANDOLPH CAMPUS HIGH SCHOOL(228, 430, 456, 423)
+ABRAHAM LINCOLN HIGH SCHOOL(475, 396, 437, 393)
+ACADEMY FOR CAREERS IN TELEVISION AND FILM(98, 410, 440, 405)
+ACADEMY FOR COLLEGE PREPARATION AND CAREER EXPLORATION: A COLLEGE BOARD SCHOO
+ACADEMY FOR CONSERVATION AND THE ENVIRONMENT(35, 363, 381, 367)
+ACADEMY FOR ENVIRONMENTAL LEADERSHIP(50, 380, 366, 352)
+ACADEMY FOR LANGUAGE AND TECHNOLOGY(54, 315, 339, 297)
+ACADEMY FOR SCHOLARSHIP AND ENTREPRENEURSHIP: A COLLEGE BOARD SCHOOL(56, 386,
+ACADEMY FOR SOCIAL ACTION: A COLLEGE BOARD SCHOOL(33, 354, 366, 342)
+ACADEMY FOR YOUNG WRITERS(68, 387, 357, 381)
+ACADEMY OF AMERICAN STUDIES(135, 487, 492, 491)
+ACADEMY OF BUSINESS AND COMMUNITY DEVELOPMENT(9, 439, 374, 418)
+ACADEMY OF ENVIRONMENTAL SCIENCE SECONDARY HIGH SCHOOL(48, 369, 369, 357)
+ACADEMY OF FINANCE AND ENTERPRISE(89, 405, 454, 421)
+
+ 
+#6 let’s see the schools with takers who are 500 and above. 
+
+sqlite> SELECT school_name,taker
+   ...> FROM SAT
+   ...> WHERE taker>=500;
+STUYVESANT HIGH SCHOOL  832
+FIORELLO H. LAGUARDIA   531
+BRONX HIGH SCHOOL OF S  731
+BROOKLYN TECHNICAL HIG  1277
+FORT HAMILTON HIGH SCH  694
+EDWARD R. MURROW HIGH   727
+MIDWOOD HIGH SCHOOL     824
+JAMES MADISON HIGH SCH  518
+JOHN BOWNE HIGH SCHOOL  558
+BENJAMIN N. CARDOZO HI  888
+FRANCIS LEWIS HIGH SCH  934
+BAYSIDE HIGH SCHOOL     708
+FOREST HILLS HIGH SCHO  762
+TOTTENVILLE HIGH SCHOO  807
+SUSAN E. WAGNER HIGH S  535
+
+#7 Going forward from question 6 , which schools score best overall among highest numbers of SAT takers in NYC
+ 
+sqlite> SELECT DBN,school_name,taker,reading,math,writing,(reading+math+math) as 'total'
+   ...> FROM SAT
+   ...> WHERE taker >= 500
+   ...> ORDER BY total DESC;
+02M475      STUYVESANT HIGH SCHOOL  832         679         735         682         2149
+10X445      BRONX HIGH SCHOOL OF S  731         632         688         649         2008
+13K430      BROOKLYN TECHNICAL HIG  1277        587         659         587         1905
+03M485      FIORELLO H. LAGUARDIA   531         566         564         577         1694
+26Q415      BENJAMIN N. CARDOZO HI  888         480         545         489         1570
+26Q430      FRANCIS LEWIS HIGH SCH  934         468         539         467         1546
+22K405      MIDWOOD HIGH SCHOOL     824         478         519         476         1516
+26Q495      BAYSIDE HIGH SCHOOL     708         462         523         464         1508
+21K525      EDWARD R. MURROW HIGH   727         468         496         467         1460
+28Q440      FOREST HILLS HIGH SCHO  762         456         497         454         1450
+31R455      TOTTENVILLE HIGH SCHOO  807         462         486         470         1434
+31R460      SUSAN E. WAGNER HIGH S  535         455         474         459         1403
+22K425      JAMES MADISON HIGH SCH  518         436         475         439         1386
+20K490      FORT HAMILTON HIGH SCH  694         417         478         411         1373
+25Q425      JOHN BOWNE HIGH SCHOOL  558         397         451         395         1299
+
+#8 Now, we will see total scores with number of student less than 500. I will limit to the first 15 
+
+sqlite> SELECT DBN,school_name,taker,reading,math,writing,(reading+math+math) as 'total'
+   ...> FROM SAT
+   ...> WHERE taker <= 500
+   ...> ORDER BY total DESC
+   ...> LIMIT 15;
+31R605      STATEN ISLAND TECHNICAL HIGH SCHOOL  227         635         682         636         1999
+10X696      HIGH SCHOOL OF AMERICAN STUDIES AT   92          636         648         636         1932
+28Q687      QUEENS HIGH SCHOOL FOR THE SCIENCES  121         612         660         596         1932
+25Q525      TOWNSEND HARRIS HIGH SCHOOL          278         621         651         638         1923
+05M692      HIGH SCHOOL FOR MATHEMATICS- SCIENC  101         605         654         588         1913
+01M696      BARD HIGH SCHOOL EARLY COLLEGE       130         624         604         628         1832
+02M416      ELEANOR ROOSEVELT HIGH SCHOOL        127         572         594         592         1760
+14K449      BROOKLYN LATIN SCHOOL- THE           72          586         584         570         1754
+03M479      BEACON HIGH SCHOOL                   261         577         575         592         1727
+02M412      N.Y.C. LAB SCHOOL FOR COLLABORATIVE  114         537         590         550         1717
+24Q299      BARD HIGH SCHOOL EARLY COLLEGE II    155         545         568         550         1681
+01M539      NEW EXPLORATIONS INTO SCIENCE- TECH  159         522         574         525         1670
+30Q580      BACCALAUREATE SCHOOL FOR GLOBAL EDU  61          524         568         544         1660
+22K535      LEON M. GOLDSTEIN HIGH SCHOOL FOR T  259         524         561         542         1646
+02M418      MILLENNIUM HIGH SCHOOL               144         528         553         533         1634
+
+
+/*9 Found interesting function LIKE and it is very useful to group by codes such as DBN (District Borough Number), way of organizing schools and their locations by NYC Department of Education. For example, DBN such as 01M292 or anything with M refers to school in Manhattan where as code with 07X221 or ‘X’ in it refers to Bronx. You may search by tying code here
+http://schools.nyc.gov/SchoolSearch/
+
+For now , We will see top 15 highest scores in Manhattan. 
+ */
+
+
+sqlite> SELECT DBN,school_name,taker,reading,math,writing,(reading+math+math) as 'total'
+   ...> FROM SAT
+   ...> WHERE DBN LIKE '%M%'
+   ...> ORDER BY total DESC
+   ...> LIMIT 15;
+02M475      STUYVESANT HIGH SCHOOL  832         679         735         682         2149
+05M692      HIGH SCHOOL FOR MATHEM  101         605         654         588         1913
+01M696      BARD HIGH SCHOOL EARLY  130         624         604         628         1832
+02M416      ELEANOR ROOSEVELT HIGH  127         572         594         592         1760
+03M479      BEACON HIGH SCHOOL      261         577         575         592         1727
+02M412      N.Y.C. LAB SCHOOL FOR   114         537         590         550         1717
+03M485      FIORELLO H. LAGUARDIA   531         566         564         577         1694
+01M539      NEW EXPLORATIONS INTO   159         522         574         525         1670
+02M418      MILLENNIUM HIGH SCHOOL  144         528         553         533         1634
+02M411      BARUCH COLLEGE CAMPUS   104         496         563         518         1622
+02M413      SCHOOL OF THE FUTURE H  66          517         533         515         1583
+02M545      HIGH SCHOOL FOR DUAL L  78          412         581         431         1574
+02M565      URBAN ACADEMY LABORATO  30          527         508         512         1543
+02M408      PROFESSIONAL PERFORMIN  94          509         490         523         1489
+04M435      MANHATTAN CENTER FOR S  375         461         514         455         1489
+
+#10 Let’s see top 15 schools with highest number of student takers in Queens
+
+sqlite> SELECT DBN,school_name,taker,reading,math,writing,(reading+math+math) as 'total'
+   ...> FROM SAT
+   ...> WHERE DBN LIKE '%Q%'
+   ...> ORDER BY taker DESC
+   ...> LIMIT 15;
+26Q430      FRANCIS LEWIS HIGH SCHOOL  934         468         539         467         1546
+26Q415      BENJAMIN N. CARDOZO HIGH   888         480         545         489         1570
+28Q440      FOREST HILLS HIGH SCHOOL   762         456         497         454         1450
+26Q495      BAYSIDE HIGH SCHOOL        708         462         523         464         1508
+25Q425      JOHN BOWNE HIGH SCHOOL     558         397         451         395         1299
+28Q505      HILLCREST HIGH SCHOOL      462         395         413         386         1221
+28Q620      THOMAS A. EDISON CAREER A  422         452         478         442         1408
+27Q475      RICHMOND HILL HIGH SCHOOL  404         382         404         368         1190
+27Q480      JOHN ADAMS HIGH SCHOOL     403         391         409         392         1209
+24Q610      AVIATION CAREER & TECHNIC  396         445         496         423         1437
+30Q445      WILLIAM CULLEN BRYANT HIG  395         414         449         412         1312
+30Q450      LONG ISLAND CITY HIGH SCH  392         403         420         395         1243
+25Q460      FLUSHING HIGH SCHOOL       347         393         441         382         1275
+26Q435      MARTIN VAN BUREN HIGH SCH  334         391         397         384         1185
+24Q455      NEWTOWN HIGH SCHOOL        320         383         440         380         1263
