@@ -31,7 +31,7 @@
 -[x] As explained above, please see figure 1,2,3. 
 
  
- **a comparison of House ID: 803 VS House ID: 3613**:
+ **A comparison of House ID: 803 VS House ID: 3613**:
  
 - [x] 3613 is a larger houshold with more bedroom (5 vs 3) and more resident (5 vs 1). It also consumed about 35% more electricity on average throgouht 121 days. However, plotting them over time gives us more interesting information. (Ref: 2)
  
