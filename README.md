@@ -26,7 +26,7 @@
   - [x] I chose to remove data points which are beyond 2 standard deviation. The correlation between number of bedroom has improved  to about 68% from 54%. (Ref: 1.9)
 
  
- ** a plot of the residents VS electrity**:
+ **a plot of the residents VS electrity**:
  
 -[x] As explained above, please see figure 1,2,3. 
 
@@ -52,7 +52,7 @@
 
  
  
- **pairwise correlation of columns coefficients for all the covariates versus the average energy usage for the household over the recording period.**:
+ **pairwise correlation of columns coefficients for all the covariates versus the average energy usage**:
  
 - [x]  After doing pairwise correlation as explained above in 1.4, bedroom and average electricity consumption has more weight than resident.
  
