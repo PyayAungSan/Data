@@ -1,0 +1,212 @@
+Assignment 6
+SAN, Pyay Aung (pas502)
+===============================================================================================
+
+mysql -hwarehouse -ppassword pas502_as6_test
+
+1. Write a SQL statement to display the names, course numbers and departments of all of the courses in alphabetical order by course title.
+
+mysql> SELECT c.no,c.title,c.department
+    -> FROM course c
+    -> ORDER BY c.title;
++--------------+--------------------+------------------+
+| no           | title              | department       |
++--------------+--------------------+------------------+
+| AUA 604      | Acting is Life     | Acting           |
+| MAUA 200     | Calculus           | Maths            |
+| CHUA 204     | Chemistry I        | Life Science     |
+| CSCI 201     | CSO                | Computer Science |
+| CSCI-UA.60-1 | DataBase           | Computer Science |
+| EUA 304      | Earth, Life ,Time  | Life Science     |
+| EW UA        | Expository Writing | English          |
+| HUUA 104     | Humantity I        | Social Science   |
+| CSCI 300     | OS                 | Computer Science |
+| PHUA 203     | Physics I          | Physics          |
++--------------+--------------------+------------------+
+10 rows in set (0.00 sec)
+
+
+2. Write a SQL statement to display the name, course number, credit hours and department for all courses that are not taught in the mathematical or physical sciences. 
+#Since there is no physical sciences written, use Life Science instead to ignore.
+
+
+mysql> SELECT c.no,c.title,c.credit_hour,c.department
+    -> FROM course c 
+    -> WHERE (c.department<>"Maths")
+    -> OR (c.department<>"Life Science");
++--------------+--------------------+-------------+------------------+
+| no           | title              | credit_hour | department       |
++--------------+--------------------+-------------+------------------+
+| CSCI 201     | CSO                |           4 | Computer Science |
+| CSCI 300     | OS                 |           4 | Computer Science |
+| CSCI-UA.60-1 | DataBase           |           4 | Computer Science |
+| EW UA        | Expository Writing |           4 | English          |
+| MAUA 200     | Calculus           |           4 | Maths            |
+| CHUA 204     | Chemistry I        |           4 | Life Science     |
+| HUUA 104     | Humantity I        |           4 | Social Science   |
+| PHUA 203     | Physics I          |           4 | Physics          |
+| EUA 304      | Earth, Life ,Time  |           2 | Life Science     |
+| AUA 604      | Acting is Life     |           1 | Acting           |
++--------------+--------------------+-------------+------------------+
+10 rows in set (0.00 sec)
+
+3. Write a SQL statement to display summary information for each textbook in a bibliographic-style format in alphabetical order by the author's last name: Author; Title (Publisher: Year of publication).
+
+mysql> SELECT CONCAT (author," ; ",title,", (",publisher,", ",year_written,")") As books 
+       FROM books 
+       ORDER BY author;
++----------------------------------------------------------------------------+
+| books                                                                      |
++----------------------------------------------------------------------------+
+| Barrault,Jean Louis ; How to act like a normal person, (Tisch Press, 1855) |
+| Bryant,Randal ; Computer System: Programmer's pe, (Addison-Wesley, 2014)   |
+| Chen,Tahaghoghi ; Learning my SQL, (O'Reilly, 2014)                        |
+| Chow, Joseph ; Enviornmental Science, (Navigate, 1999)                     |
+| Jak,Shankar ; Fundamentls of Physics, (Yale Press, 2006)                   |
+| Kaepelle,Susanne ; History of Art, (Penguin, 1866)                         |
+| Pauling,Linus ; General Chemistry, (Dover, 2000)                           |
+| Shepherd,Randy ; C Programming, (Penguin, 1998)                            |
+| Spriling,Aurthur ; Brooklyn Reader, (Cengage, 2015)                        |
+| Taylor,Steven ; Calculus and Application, (Cengage, 2015)                  |
++----------------------------------------------------------------------------+
+10 rows in set (0.00 sec)
+
+4.Write a SQL statement to display the title and author of every book in order by department (e.g. the chemistry textbooks would be in alphabetical order by author before the French textbooks).
+#add department column for double-checking
+
+mysql> SELECT b.title,b.author,c.department
+    -> FROM books b,course c,b_c bc
+    -> WHERE (bc.isbn=b.isbn) AND
+    -> (bc.no = c.no)
+    -> ORDER BY c.department;
++----------------------------------+---------------------+------------------+
+| title                            | author              | department       |
++----------------------------------+---------------------+------------------+
+| How to act like a normal person  | Barrault,Jean Louis | Acting           |
+| Learning my SQL                  | Chen,Tahaghoghi     | Computer Science |
+| Computer System: Programmer's pe | Bryant,Randal       | Computer Science |
+| C Programming                    | Shepherd,Randy      | Computer Science |
+| Computer System: Programmer's pe | Bryant,Randal       | Computer Science |
+| Brooklyn Reader                  | Spriling,Aurthur    | English          |
+| General Chemistry                | Pauling,Linus       | Life Science     |
+| Enviornmental Science            | Chow, Joseph        | Life Science     |
+| Calculus and Application         | Taylor,Steven       | Maths            |
+| History of Art                   | Kaepelle,Susanne    | Social Science   |
++----------------------------------+---------------------+------------------+
+10 rows in set (0.00 sec)
+
+5. Write a SQL statement to list the five most expensive books required along with the course number, title, author, price, publisher and department for each book.
+
+mysql> SELECT c.no,c.title,b.author,b.price,b.publisher,c.department  
+    -> FROM books b, course c, b_c bc
+    -> WHERE (bc.isbn = b.isbn) AND
+    -> (bc.no = c.no)
+    -> ORDER BY b.price DESC
+    -> LIMIT 5;
++----------+-------------------+---------------------+---------+-------------+------------------+
+| no       | title             | author              | price   | publisher   | department       |
++----------+-------------------+---------------------+---------+-------------+------------------+
+| AUA 604  | Acting is Life    | Barrault,Jean Louis | 599.000 | Tisch Press | Acting           |
+| EUA 304  | Earth, Life ,Time | Chow, Joseph        | 250.000 | Navigate    | Life Science     |
+| HUUA 104 | Humantity I       | Kaepelle,Susanne    | 115.000 | Penguin     | Social Science   |
+| MAUA 200 | Calculus          | Taylor,Steven       |  85.000 | Cengage     | Maths            |
+| CSCI 201 | CSO               | Shepherd,Randy      |  80.000 | Penguin     | Computer Science |
++----------+-------------------+---------------------+---------+-------------+------------------+
+5 rows in set (0.00 sec)
+
+6.Write a SQL statement to display the average cost of a textbook required by each department.
+
+mysql> SELECT c.department, AVG(b.price)  
+    -> FROM books b, course c, b_c bc
+    -> WHERE (bc.isbn=b.isbn) AND 
+    -> (bc.no=c.no)
+    -> GROUP BY c.department;
++------------------+--------------+
+| department       | AVG(b.price) |
++------------------+--------------+
+| Acting           |  599.0000000 |
+| Computer Science |   56.2500000 |
+| English          |   65.0000000 |
+| Life Science     |  132.5000000 |
+| Maths            |   85.0000000 |
+| Social Science   |  115.0000000 |
++------------------+--------------+
+6 rows in set (0.01 sec)
+
+7.Write a SQL statement to count the number of of books required for each course listed and display the results in order by course ID. This will be used to help you set up your shelves.
+
+mysql> SELECT c.no , COUNT(*)
+    -> FROM books b, course c, b_c bc
+    -> WHERE (bc.isbn = b.isbn) AND
+    -> (bc.no = c.no)
+    -> GROUP BY c.no
+    -> ORDER BY c.no;
++--------------+----------+
+| no           | COUNT(*) |
++--------------+----------+
+| AUA 604      |        1 |
+| CHUA 204     |        1 |
+| CSCI 201     |        2 |
+| CSCI 300     |        1 |
+| CSCI-UA.60-1 |        1 |
+| EUA 304      |        1 |
+| EW UA        |        1 |
+| HUUA 104     |        1 |
+| MAUA 200     |        1 |
++--------------+----------+
+9 rows in set (0.01 sec)
+
+8 What is the average cost of optional books in the Computer Science Department?
+
+mysql> SELECT c.department, AVG(b.price)  
+    -> FROM books b, course c, b_c bc
+    -> WHERE (bc.isbn=b.isbn) AND 
+    -> (bc.no=c.no)
+    -> AND (c.department = "Computer Science")
+    -> AND bc.optional = "TRUE";
++------------------+--------------+
+| department       | AVG(b.price) |
++------------------+--------------+
+| Computer Science |   48.3333333 |
++------------------+--------------+
+1 row in set (0.00 sec)
+
+9. Number of books requested in each department
+
+mysql> SELECT SUM(bc.requested_copy),c.department 
+    -> FROM books b, course c, b_c bc
+    -> WHERE (bc.isbn=b.isbn) AND
+    -> (bc.no=c.no)
+    -> GROUP BY c.department;
++------------------------+------------------+
+| SUM(bc.requested_copy) | department       |
++------------------------+------------------+
+|                    955 | Acting           |
+|                     85 | Computer Science |
+|                     65 | English          |
+|                     70 | Life Science     |
+|                     40 | Maths            |
+|                     80 | Social Science   |
++------------------------+------------------+
+6 rows in set (0.01 sec)
+
+
+10 . Number of department in each division where text books are required.
+
+mysql> SELECT c.department , COUNT(*), c.division
+    -> FROM course c
+    -> GROUP BY c.department;
++------------------+----------+----------------------------+
+| department       | COUNT(*) | division                   |
++------------------+----------+----------------------------+
+| Acting           |        1 | Drama                      |
+| Computer Science |        3 | Maths and Computer Science |
+| English          |        1 | Arts and Science           |
+| Life Science     |        2 | Arts and Science           |
+| Maths            |        1 | Maths and Computer Science |
+| Physics          |        1 | Arts and Science           |
+| Social Science   |        1 | Arts and Science           |
++------------------+----------+----------------------------+
+7 rows in set (0.00 sec)
+
+
